@@ -1,0 +1,56 @@
+<?php
+	$payload = [];
+	
+	foreach ($attachments as $attachment) {
+		$imageMaps = $this->api()->search('image_maps', ['item_id' => $attachment->item()->id()])->getContent();
+
+		$data = [
+			"url" => $attachment->item()->media()[0]->originalUrl(),
+			"imageMap" => [],
+		];
+
+		foreach ($imageMaps as $imageMap) {
+			$mapData = [
+				"target" => $imageMap->target(),
+				"coordinates" => $imageMap->coordinates(),
+				"alt" => $imageMap->alt(),
+			];
+
+			array_push($data["imageMap"], $mapData);
+		}
+
+		$key = str_replace(' ', '_', $attachment->item()->title());
+		$payload[$key] = $data;
+	}
+?>
+
+<div style="position:relative;">
+	<?php
+		$this->headLink()->appendStylesheet($this->assetUrl('css/image_slider.css', 'SimpleCarousel'));
+		$this->headScript()->appendFile($this->assetUrl('js/image_slider.js', 'SimpleCarousel'));
+	?>
+
+	<div class="siema">
+		<div class="row">
+			<div class="seima-wrap image-slider-content">
+				<?php foreach($payload as $key => $data): ?>
+					<img class="seima-img time-slider-image" src="<?php echo $data["url"] ?>" usemap="#<?php echo $key; ?>" />
+					<map name="#<?php echo $key; ?>">
+						<?php foreach($data["imageMap"] as $mapData): ?>
+							<area alt="<?php echo $mapData["alt"] ?>" title="<?php echo $key ?>" href="<?php echo $mapData["target"]; ?>" shape="rect" coords="<?php echo $mapData["coordinates"]; ?>" target="_blank" value="0" />
+						<?php endforeach; ?>
+					</map>
+				<?php endforeach; ?>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+	    <div class="image-slider">
+	    	<div class="image-slider-value">
+	    		<?php echo $startYear; ?>
+	    	</div>
+	    	<input type="range" min="<?php echo $startYear ?>" max="<?php echo $endYear ?>" value="<?php echo $startYear ?>" step="1">
+	    </div>
+	</div>
+</div>
