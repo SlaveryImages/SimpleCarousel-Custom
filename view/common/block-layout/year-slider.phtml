@@ -37,7 +37,7 @@
 					<img class="seima-img time-slider-image" src="<?php echo $data["url"] ?>" usemap="#<?php echo $key; ?>" />
 					<map name="#<?php echo $key; ?>">
 						<?php foreach($data["imageMap"] as $mapData): ?>
-							<area alt="<?php echo $mapData["alt"] ?>" title="<?php echo $key ?>" href="<?php echo $mapData["target"]; ?>" shape="rect" coords="<?php echo $mapData["coordinates"]; ?>" target="_blank" value="0" />
+							<area alt="<?php echo $mapData["alt"] ?>" title="<?php echo $mapData["alt"] ?>" href="<?php echo $mapData["target"]; ?>" shape="rect" coords="<?php echo $mapData["coordinates"]; ?>" target="_blank" value="0" />
 						<?php endforeach; ?>
 					</map>
 				<?php endforeach; ?>
